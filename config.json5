@@ -1,0 +1,34 @@
+// {
+//   /// The node's mode (router, peer or client)
+//   mode: "peer",
+//   connect: {
+//     endpoints: ["tcp/127.0.0.1:7447"],
+//   },
+//   scouting: {
+//     gossip: {
+//       enabled: true,
+//       multihop: false,
+//       autoconnect: { router: [], peer: ["router", "peer"] }, 
+//     },
+//     multicast: {
+//       enabled: false,
+//       address: "224.0.0.224:7446",
+//       interface: "auto",
+//       autoconnect: { router: [], peer: ["router", "peer"] }, 
+//       listen: true,
+//     },
+//   },
+// }
+
+{
+  mode: "client",
+  scouting: {
+      multicast: {
+        enabled: true,
+        address: "224.0.0.224:7446",
+        interface: "auto",
+        autoconnect: { router: [], peer: ["router", "peer"] }, 
+        listen: true,
+      },
+    },
+}
