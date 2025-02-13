@@ -40,6 +40,21 @@ const char *kindToStr(SampleKind _kind)
 }
 
 //////////////////////////////////////////////////
+void livelinessDataHandler(const Sample &_sample)
+{
+  if (_sample.get_kind() == Z_SAMPLE_KIND_PUT)
+  {
+    std::cout << ">> [LivelinessSubscriber] New alive token ('"
+              << _sample.get_keyexpr().as_string_view() << "')\n";
+  }
+  else if (_sample.get_kind() == Z_SAMPLE_KIND_DELETE)
+  {
+    std::cout << ">> [LivelinessSubscriber] Dropped token ('"
+              << _sample.get_keyexpr().as_string_view() << "')\n";
+  }
+}
+
+//////////////////////////////////////////////////
 int _main(int _argc, char **_argv)
 {
   auto &&[config, args] =
@@ -57,7 +72,7 @@ int _main(int _argc, char **_argv)
   // auto session = Session::open(std::move(config));
   auto session = Session::open(Config::create_default());
 
-  auto dataHandler = [](const Sample &_sample)
+  auto dataHandler = [](const zenoh::Sample &_sample)
   {
     std::cout << ">> [Subscriber] Received " << kindToStr(_sample.get_kind())
               << " ('" << _sample.get_keyexpr().as_string_view() << "' : '"
@@ -73,6 +88,11 @@ int _main(int _argc, char **_argv)
             << "'..." << std::endl;
   auto subscriber = session.declare_subscriber(
     keyexpr, dataHandler, closures::none);
+
+  Session::LivelinessSubscriberOptions opts;
+  opts.history = true;
+  auto livelinessSubscriber = session.liveliness_declare_subscriber(
+    keyexpr, &livelinessDataHandler, closures::none, std::move(opts));
 
   std::cout << "Press CTRL-C to quit...\n";
   while (true)

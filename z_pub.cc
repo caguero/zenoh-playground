@@ -45,6 +45,8 @@ int _main(int _argc, char **_argv) {
   auto pub = session.declare_publisher(KeyExpr(keyexpr));
   std::cout << "Press CTRL-C to quit..." << std::endl;
 
+  auto zToken = session.liveliness_declare_token(KeyExpr(keyexpr));
+
   for (int idx = 0; idx < std::numeric_limits<int>::max(); ++idx)
   {
     std::this_thread::sleep_for(1s);

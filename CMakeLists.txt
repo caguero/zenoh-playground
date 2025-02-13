@@ -16,7 +16,10 @@ set_property(TARGET z_pub PROPERTY LANGUAGE CXX)
 set_property(TARGET z_pub PROPERTY CXX_STANDARD 17)
 
 add_executable(z_sub z_sub.cc)
-target_link_libraries(z_sub PRIVATE zenohcxx::zenohc)
+target_link_libraries(z_sub
+  PRIVATE
+    zenohcxx::zenohc
+)
 set_property(TARGET z_sub PROPERTY LANGUAGE CXX)
 set_property(TARGET z_sub PROPERTY CXX_STANDARD 17)
 
